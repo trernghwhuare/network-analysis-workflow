@@ -54,9 +54,9 @@ analyze-network-metrics --graph path/to/graph.gt --out output_directory --prefix
 
 ### Python API
 ```python
-from network_metrics_package import compute_and_save_metrics
-from network_metrics_package.plotting import load_metrics, plot_violin, plot_box, plot_heatmap_corr, plot_clustermap
 import graph_tool.all as gt
+from network_metrics_package.metrics.generator import compute_and_save_metrics
+from network_metrics_package.plotting.compare_plots import load_metrics, plot_violin, plot_box, plot_heatmap_corr, plot_clustermap
 
 # Load a graph
 G = gt.load_graph("path/to/graph.gt")
@@ -73,6 +73,67 @@ plot_box(metrics, out="box_plot.png")
 plot_heatmap_corr(metrics, out="correlation_heatmap.png")
 plot_clustermap(metrics, out="clustermap.png")
 ```
+
+### Working with Different Network Formats
+
+If your network is not already in graph-tool format (.gt), you can convert it:
+
+```bash
+# For edge list format
+python load_network.py network.edgelist edgelist
+
+# For GraphML format
+python load_network.py network.graphml graphml
+
+# For GML format
+python load_network.py network.gml gml
+```
+
+### Complete Analysis Workflow
+
+For a complete analysis with all visualizations:
+
+```bash
+python usage_example.py path/to/graph.gt output_directory network_name
+```
+
+This will:
+1. Load your network
+2. Compute all metrics
+3. Save metrics in .npz and .csv formats
+4. Generate all visualizations
+5. Print summary statistics
+
+## Working with Real Networks
+
+### Supported Formats
+The package works with networks in the following formats:
+- Graph-tool (.gt) - Native format, most efficient
+- GraphML (.graphml) - Standard XML-based format
+- GML (.gml) - Graph Modeling Language
+- Edge lists (.edges, .txt) - Simple text format
+- Adjacency matrices (.csv) - Matrix representation
+
+### Converting Your Network
+If your network is in a different format, you can use the provided conversion scripts:
+
+```bash
+# Convert edge list to graph-tool format
+python load_network.py my_network.edgelist edgelist
+
+# Convert GraphML to graph-tool format
+python load_network.py my_network.graphml graphml
+```
+
+### Analysis Output
+The analysis produces:
+1. Metrics in .npz format (for programmatic access)
+2. Metrics in .csv format (for easy viewing)
+3. Visualizations:
+   - Violin plots showing metric distributions
+   - Box plots showing metric quartiles
+   - Correlation heatmaps showing metric relationships
+   - Clustermaps showing metric groupings
 
 ## Package Structure
 ```
